@@ -1,4 +1,7 @@
 /src/busybox*/
 /src/busybox*
 /src/linux*/
-/src/linux*
+/src/linux*c
+
+*.tar.*
+*.tgz

@@ -1,15 +1,13 @@
-FROM ubuntu:22.04
+FROM riscv64/ubuntu:22.04
 LABEL maintainer offreitas
+
+ENV ARCH=riscv
+ENV CROSS_COMPILE=riscv64-linux-gnu-
 
 RUN apt-get update && apt-get install -y
 RUN apt-get install -y                  \
         sudo                            \
-        #
-        # ARM development purposes
-        #
-        binutils-arm-linux-gnueabi      \
-        gcc-arm-linux-gnueabi           \
-        qemu-system-arm:arm64           \
+        wget                            \
         #
         # Libraries to develop using qemu
         # https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
@@ -21,10 +19,14 @@ RUN apt-get install -y                  \
         ccache                          \
         flex                            \
         libelf-dev                      \
+        libc6-armel-cross               \
         bison                           \
         #
+        linux-headers-generic           \
         cpio                            \
-        bc                              
+        bc                              \
+        #
+        qemu-system-riscv64
 
 # Create ubuntu user with sudo privileges
 RUN useradd -ms /bin/bash ubuntu && \
@@ -34,6 +36,12 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Set as default user
 USER ubuntu
+
+RUN mkdir /home/ubuntu/tarballs
+WORKDIR /home/ubuntu/tarballs
+
+RUN wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.6.tar.xz ; wget https://www.busybox.net/downloads/busybox-1.36.0.tar.bz2
+
 WORKDIR /home/ubuntu
 
 CMD ["/bin/bash"]
