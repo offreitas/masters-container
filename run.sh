@@ -1,2 +1,7 @@
 #!/bin/sh
-docker run --rm -ti --cpus="2" -v "$PWD/src":/home/ubuntu/src offreitas/masters-container
+docker run \
+    --rm \
+    --cpus="2" \
+    -v "$PWD/src":/home/ubuntu/src \
+    --platform linux/riscv64 \
+    -ti offreitas/masters-container

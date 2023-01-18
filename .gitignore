@@ -2,6 +2,7 @@
 /src/busybox*
 /src/linux*/
 /src/linux*c
+/src/initramfs/
 
 *.tar.*
 *.tgz

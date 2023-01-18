@@ -3,11 +3,16 @@ LABEL maintainer offreitas
 
 ENV ARCH=riscv
 ENV CROSS_COMPILE=riscv64-linux-gnu-
+ENV KERNELDIR=/home/ubuntu/src/linux-6.0.19
 
 RUN apt-get update && apt-get install -y
 RUN apt-get install -y                  \
         sudo                            \
         wget                            \
+        kmod                            \
+        linux-headers-generic           \
+        cpio                            \
+        bc                              \
         #
         # Libraries to develop using qemu
         # https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade
@@ -21,10 +26,6 @@ RUN apt-get install -y                  \
         libelf-dev                      \
         libc6-armel-cross               \
         bison                           \
-        #
-        linux-headers-generic           \
-        cpio                            \
-        bc                              \
         #
         qemu-system-riscv64
 
@@ -40,8 +41,8 @@ USER ubuntu
 RUN mkdir /home/ubuntu/tarballs
 WORKDIR /home/ubuntu/tarballs
 
-RUN wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.6.tar.xz ; wget https://www.busybox.net/downloads/busybox-1.36.0.tar.bz2
+RUN wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.0.19.tar.xz ; wget https://www.busybox.net/downloads/busybox-1.36.0.tar.bz2
 
-WORKDIR /home/ubuntu
+WORKDIR /home/ubuntu/
 
 CMD ["/bin/bash"]
